@@ -55,3 +55,8 @@ test("array assignment", () => {
     expect(b).toBe(5);
 });
 
+
+test('array slice', function () {
+    let array = [1, 2, 3];
+    expect(array.slice(1, 2 + 1)).toEqual([2, 3]);
+});
