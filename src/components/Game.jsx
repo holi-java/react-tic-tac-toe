@@ -52,13 +52,17 @@ export default class Game extends Component {
 
     get steps() {
         return this.state.history.map((_, step) => {
-            const desc = step > 0 ? 'Move #' + step : 'Game start';
-            return (
-                <li key={step.toString()}>
-                    <a href="#" onClick={() => this.jumpTo(step)}>{desc}</a>
-                </li>
-            );
+            return (<li key={step.toString()}> {this.step(step)} </li>);
         });
+    }
+
+    step(step) {
+        return <a href="#" onClick={() => this.jumpTo(step)}>{this.descriptionOf(step)}</a>;
+    }
+
+    descriptionOf(step) {
+        const desc = step > 0 ? `Move #${step}` : 'Game start';
+        return this.state.position === step ? <b>{desc}</b> : desc;
     }
 
     render() {
