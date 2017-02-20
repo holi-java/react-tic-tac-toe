@@ -8,26 +8,24 @@ export default class Game extends Component {
             history: [{
                 squares: Array(9).fill(null)
             }],
-            xIsNext: true,
             position: 0
         };
     }
 
-    player(xIsNext) {
-        return xIsNext ? 'X' : 'O';
+    player(step) {
+        return step % 2 === 0 ? 'X' : 'O';
     }
 
     handleClick = (i) => {
-        this.setState(({history, position, xIsNext}) => {
+        this.setState(({history, position}) => {
             let squares = [...history[position].squares];
             if (squares[i] != null || calculateWinner(squares)) {
                 return null;
             }
-            squares[i] = this.player(xIsNext);
+            squares[i] = this.player(position);
 
             return {
                 history: history.slice(0, position + 1).concat([{squares: squares}]),
-                xIsNext: !xIsNext,
                 position: position + 1
             };
 
@@ -36,16 +34,15 @@ export default class Game extends Component {
 
     jumpTo(step) {
         this.setState({
-            position: step,
-            xIsNext: step % 2 == 0
+            position: step
         });
     }
 
     get status() {
-        let {history, xIsNext, position} = this.state;
+        let {history, position} = this.state;
         let {squares} = history[position];
         const winner = calculateWinner(squares);
-        return winner ? `Winner:${winner}` : `Next player: ${this.player(xIsNext)}`;
+        return winner ? `Winner:${winner}` : `Next player: ${this.player(position)}`;
     }
 
     get current() {
