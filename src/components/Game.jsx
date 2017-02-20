@@ -50,7 +50,7 @@ export default class Game extends Component {
         return history[position];
     }
 
-    get moves() {
+    get steps() {
         return this.state.history.map((_, step) => {
             const desc = step > 0 ? 'Move #' + step : 'Game start';
             return (
@@ -62,7 +62,7 @@ export default class Game extends Component {
     }
 
     render() {
-        let {status, moves, handleClick, current:{squares}}=this;
+        let {status, steps, handleClick, current:{squares}}=this;
 
         return (
             <div className="game">
@@ -71,7 +71,7 @@ export default class Game extends Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{moves}</ol>
+                    <ol>{steps}</ol>
                 </div>
             </div>
         );
