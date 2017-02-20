@@ -40,6 +40,9 @@ export default class Game extends Component {
     get status() {
         let {history, position} = this.state;
         let {squares} = history[position];
+
+        if (!squares.includes(null)) return 'Game Over';
+
         let {winner} = calculateWinner(squares) || {};
         return winner ? `Winner:${winner}` : `Next player: ${this.whom(position)}`;
     }
