@@ -5,6 +5,7 @@ export default class Game extends Component {
     constructor() {
         super();
         this.state = {
+            asc: true,
             history: [{
                 squares: Array(9).fill(null)
             }],
@@ -33,9 +34,7 @@ export default class Game extends Component {
     };
 
     jumpTo(step) {
-        this.setState({
-            position: step
-        });
+        this.setState({position: step});
     }
 
     get status() {
@@ -51,8 +50,11 @@ export default class Game extends Component {
     }
 
     get steps() {
-        return this.state.history.map((_, step) => {
-            return (<li key={step.toString()}> {this.step(step)} </li>);
+        let {history, asc}=this.state;
+        let snapshot = [...history];
+
+        return (asc ? snapshot : snapshot.reverse()).map((_, step) => {
+            return (<li key={step.toString()}> {this.step(asc ? step : snapshot.length - 1 - step)} </li>);
         });
     }
 
@@ -61,12 +63,13 @@ export default class Game extends Component {
     }
 
     descriptionOf(step) {
+        let {position} =this.state;
         const desc = step > 0 ? `Move #${step}` : 'Game start';
-        return this.state.position === step ? <b>{desc}</b> : desc;
+        return position === step ? <b>{desc}</b> : desc;
     }
 
     render() {
-        let {status, steps, handleClick, current:{squares}}=this;
+        let {status, steps, handleClick, current:{squares}, state:{asc}}=this;
 
         return (
             <div className="game">
@@ -75,6 +78,9 @@ export default class Game extends Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <div>
+                        <button onClick={() => this.setState({asc: !asc})}>{asc ? "DESC" : "ASC"}</button>
+                    </div>
                     <ol>{steps}</ol>
                 </div>
             </div>
