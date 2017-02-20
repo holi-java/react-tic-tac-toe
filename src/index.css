@@ -32,6 +32,18 @@ ol, ul {
     width: 34px;
 }
 
+.square-x {
+    color: darkgreen;
+}
+
+.square-o {
+    color: darkslateblue;
+}
+
+.square-highlight {
+    color: red;
+}
+
 .square:focus {
     outline: none;
 }

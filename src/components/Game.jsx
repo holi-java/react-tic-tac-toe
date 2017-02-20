@@ -13,7 +13,7 @@ export default class Game extends Component {
         };
     }
 
-    player(step) {
+    whom(step) {
         return step % 2 === 0 ? 'X' : 'O';
     }
 
@@ -23,7 +23,7 @@ export default class Game extends Component {
             if (squares[i] != null || calculateWinner(squares)) {
                 return null;
             }
-            squares[i] = this.player(position);
+            squares[i] = this.whom(position);
 
             return {
                 history: history.slice(0, position + 1).concat([{squares: squares}]),
@@ -40,8 +40,8 @@ export default class Game extends Component {
     get status() {
         let {history, position} = this.state;
         let {squares} = history[position];
-        const winner = calculateWinner(squares);
-        return winner ? `Winner:${winner}` : `Next player: ${this.player(position)}`;
+        let {winner} = calculateWinner(squares) || {};
+        return winner ? `Winner:${winner}` : `Next player: ${this.whom(position)}`;
     }
 
     get current() {
@@ -70,11 +70,11 @@ export default class Game extends Component {
 
     render() {
         let {status, steps, handleClick, current:{squares}, state:{asc}}=this;
-
+        let {line = []}=calculateWinner(squares) || {};
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board squares={squares} onClick={handleClick}/>
+                    <Board highlights={line} squares={squares} onClick={handleClick}/>
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
@@ -103,7 +103,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return {line: [a, b, c], winner: squares[a]};
         }
     }
     return null;
