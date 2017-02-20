@@ -23,7 +23,7 @@ class Board extends Component {
 
     handleClick(i) {
         this.setState(({squares, xIsNext}) => {
-            if (squares[i] != null) {
+            if (squares[i] != null || calculateWinner(squares)) {
                 return null;
             }
             squares = [...squares];
@@ -45,7 +45,8 @@ class Board extends Component {
     };
 
     render() {
-        const status = `Next player: ${this.player(this.state.xIsNext)}`;
+        const winner = calculateWinner(this.state.squares);
+        const status = winner ? `Winner:${winner}` : `Next player: ${this.player(this.state.xIsNext)}`;
         return (
             <div>
                 <div className="status">{status}</div>
