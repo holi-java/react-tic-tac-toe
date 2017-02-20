@@ -16,14 +16,23 @@ class Board extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9)
+            squares: Array(9),
+            xIsNext: true
         };
     }
 
     handleClick(i) {
-        this.setState(({squares}) => {
-            squares[i] = 'X';
-            return {squares: [...squares]};
+        this.setState(({squares, xIsNext}) => {
+            if (squares[i] != null) {
+                return null;
+            }
+            squares = [...squares];
+            squares[i] = this.player(xIsNext);
+            return {
+                squares: squares,
+                xIsNext: !xIsNext
+            };
+
         });
     }
 
@@ -31,8 +40,12 @@ class Board extends Component {
         return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>;
     }
 
+    player(xIsNext) {
+        return xIsNext ? 'X' : 'O';
+    };
+
     render() {
-        const status = 'Next player: X';
+        const status = `Next player: ${this.player(this.state.xIsNext)}`;
         return (
             <div>
                 <div className="status">{status}</div>

@@ -34,6 +34,24 @@ test('array fill support', () => {
     let array = [1, 2];
     array.fill(3);
 
-    expect(array).toEqual([3,3]);
+    expect(array).toEqual([3, 3]);
+});
+
+
+test("spread object", () => {
+    let foo = {bar: 'bar'};
+    let target = {...foo};
+
+    expect(target).not.toBe(foo);
+    expect(target).toEqual(foo);
 
 });
+
+test("array assignment", () => {
+    let array = [1, 2, 3];
+
+    let b = array[1] = 5;
+
+    expect(b).toBe(5);
+});
+
