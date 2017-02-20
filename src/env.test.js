@@ -28,3 +28,12 @@ test('async function supported', (done) => {
         done();
     });
 });
+
+
+test('array fill support', () => {
+    let array = [1, 2];
+    array.fill(3);
+
+    expect(array).toEqual([3,3]);
+
+});

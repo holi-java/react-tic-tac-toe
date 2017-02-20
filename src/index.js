@@ -1,20 +1,34 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import 'babel-polyfill';
 import './index.css';
 
-class Square extends Component {
-    render() {
-        return (
-            <button className="square">
-                {this.props.value}
-            </button>
-        );
-    }
+function Square({value, onClick:handler}) {
+    return (
+        <button className="square" onClick={handler}>
+            {value}
+        </button>
+    );
 }
 
+
 class Board extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9)
+        };
+    }
+
+    handleClick(i) {
+        this.setState(({squares}) => {
+            squares[i] = 'X';
+            return {squares: [...squares]};
+        });
+    }
+
     renderSquare(i) {
-        return <Square value={i}/>;
+        return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>;
     }
 
     render() {
