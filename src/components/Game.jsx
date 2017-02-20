@@ -26,7 +26,7 @@ export default class Game extends Component {
             squares[i] = this.whom(position);
 
             return {
-                history: history.slice(0, position + 1).concat([{squares: squares}]),
+                history: history.slice(0, position + 1).concat([{squares: squares, last: i}]),
                 position: position + 1
             };
 
@@ -56,8 +56,8 @@ export default class Game extends Component {
         let {history, asc}=this.state;
         let snapshot = [...history];
 
-        return (asc ? snapshot : snapshot.reverse()).map((_, step) => {
-            return (<li key={step.toString()}> {this.step(asc ? step : snapshot.length - 1 - step)} </li>);
+        return (asc ? snapshot : snapshot.reverse()).map((_, index) => {
+            return (<li key={index.toString()}> {this.step(asc ? index : snapshot.length - 1 - index)} </li>);
         });
     }
 
@@ -66,8 +66,9 @@ export default class Game extends Component {
     }
 
     descriptionOf(step) {
-        let {position} =this.state;
-        const desc = step > 0 ? `Move #${step}` : 'Game start';
+        let {position, history} =this.state;
+        let last = history[step].last;
+        const desc = step > 0 ? `Move #(${(last % 3 ) + 1},${parseInt(last / 3) + 1})` : 'Game start';
         return position === step ? <b>{desc}</b> : desc;
     }
 
