@@ -1,32 +1,31 @@
 import React, {Component} from 'react';
 import Square from './Square';
 
-export default class Board extends Component {
+const CELLS = [1, 2, 3];
 
+export default class Board extends Component {
     renderSquare(i) {
         let {squares, onClick}=this.props;
-        return <Square value={squares[i]} onClick={() => onClick(i)}/>;
+        return <Square key={`cell-${i}`} value={squares[i]} onClick={() => onClick(i)}/>;
     }
 
     render() {
+        return <div>{ this.rows}</div>;
+    }
+
+    get rows() {
+        return CELLS.map((_, row) => this.cells(row));
+    }
+
+    cells(row) {
         return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+            <div key={`row-${row}`} className="board-row">
+                {CELLS.map((_, col) => this.cell(row, col))}
             </div>
         );
+    }
+
+    cell(row, col) {
+        return this.renderSquare(row * 3 + col);
     }
 }
